@@ -4,13 +4,16 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 import crud, models, schemas, auth
 from database import engine, get_db
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from chatbot import PsychologistChatbot 
 from auth import create_access_token, authenticate_user, get_current_user
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-pdf_paths = ["src/resources/dsm-5.pdf", "src/resources/relajacion.pdf"] # añadir /src si se van a ejecutar los tests
+pdf_paths = ["resources/dsm-5.pdf", "resources/relajacion.pdf"] # añadir /src si se van a ejecutar los tests
 web_urls = ["https://www.psychologytoday.com/us/basics/depression", "https://www.nimh.nih.gov/health/find-help", "https://www.who.int/es/news-room/fact-sheets/detail/depression", "https://www.mayoclinic.org/diseases-conditions/depression/symptoms-causes/syc-20356007", "https://www.ncbi.nlm.nih.gov/books/NBK513238/", "https://www.cdc.gov/mentalhealth/depression/index.htm"]
 chatbot = PsychologistChatbot(pdf_paths=pdf_paths)
 
